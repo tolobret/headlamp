@@ -118,6 +118,10 @@ export default function ServiceDetails(props: {
             ),
           },
           {
+            id: 'headlamp.service-selectedpods',
+            section: <SelectedPods service={item} />,
+          },
+          {
             id: 'headlamp.service-endpoints',
             section: (
               <SectionBox title={t('Endpoints')}>
@@ -186,10 +190,6 @@ export default function ServiceDetails(props: {
                 )}
               </SectionBox>
             ),
-          },
-          {
-            id: 'headlamp.service-selectedpods',
-            section: <SelectedPods service={item} />,
           },
         ]
       }

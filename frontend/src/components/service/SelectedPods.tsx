@@ -24,6 +24,7 @@ import Service from '../../lib/k8s/service';
 import { timeAgo } from '../../lib/util';
 import Empty from '../common/EmptyContent';
 import Link from '../common/Link';
+import DeleteButton from '../common/Resource/DeleteButton';
 import { SectionBox } from '../common/SectionBox';
 import SimpleTable from '../common/SimpleTable';
 
@@ -100,6 +101,10 @@ export default function SelectedPods({ service }: SelectedPodsProps) {
                 label: t('translation|Node'),
                 getter: pod => pod.spec.nodeName || '-',
               },
+              {
+                label: '',
+                getter: pod => <DeleteButton item={pod} buttonStyle="menu" />,
+              },
             ]}
           />
         )}
@@ -140,11 +145,15 @@ export default function SelectedPods({ service }: SelectedPodsProps) {
           },
           {
             label: t('translation|Age'),
-            getter: pod => age(pod.metadata.creationTimestamp),
+            getter: pod => timeAgo(pod.metadata.creationTimestamp),
           },
           {
             label: t('translation|Node'),
             getter: pod => pod.spec.nodeName || '-',
+          },
+          {
+            label: '',
+            getter: pod => <DeleteButton item={pod} buttonStyle="menu" />,
           },
         ]}
       />

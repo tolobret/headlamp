@@ -34,8 +34,11 @@ const serviceWithSelector: Service = Service.create({
   spec: {
     type: 'ClusterIP',
     clusterIP: '10.96.0.100',
+    externalIPs: [],
     ports: [
       {
+        name: 'http',
+        nodePort: 0,
         protocol: 'TCP',
         port: 80,
         targetPort: 8080,
@@ -43,6 +46,11 @@ const serviceWithSelector: Service = Service.create({
     ],
     selector: {
       app: 'example',
+    },
+  },
+  status: {
+    loadBalancer: {
+      ingress: [],
     },
   },
 });
@@ -60,14 +68,22 @@ const serviceWithEmptySelector: Service = Service.create({
   spec: {
     type: 'ClusterIP',
     clusterIP: '10.96.0.101',
+    externalIPs: [],
     ports: [
       {
+        name: 'http',
+        nodePort: 0,
         protocol: 'TCP',
         port: 80,
         targetPort: 8080,
       },
     ],
     selector: {},
+  },
+  status: {
+    loadBalancer: {
+      ingress: [],
+    },
   },
 });
 
@@ -83,14 +99,24 @@ const serviceExternalName: Service = Service.create({
   },
   spec: {
     type: 'ExternalName',
+    clusterIP: '',
+    externalIPs: [],
     externalName: 'example.com',
     ports: [
       {
+        name: 'http',
+        nodePort: 0,
         protocol: 'TCP',
         port: 80,
         targetPort: 8080,
       },
     ],
+    selector: {},
+  },
+  status: {
+    loadBalancer: {
+      ingress: [],
+    },
   },
 });
 
