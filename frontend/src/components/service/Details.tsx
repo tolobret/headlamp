@@ -30,6 +30,7 @@ import { DetailsGrid, MetadataDictGrid } from '../common/Resource';
 import PortForward from '../common/Resource/PortForward';
 import { SectionBox } from '../common/SectionBox';
 import SimpleTable from '../common/SimpleTable';
+import SelectedPods from './SelectedPods';
 
 export default function ServiceDetails(props: {
   name?: string;
@@ -115,6 +116,10 @@ export default function ServiceDetails(props: {
                 />
               </SectionBox>
             ),
+          },
+          {
+            id: 'headlamp.service-selectedpods',
+            section: <SelectedPods service={item} />,
           },
           {
             id: 'headlamp.service-endpoints',

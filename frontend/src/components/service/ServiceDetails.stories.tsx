@@ -126,6 +126,84 @@ const endpointslices = [
   },
 ];
 
+const pods = [
+  {
+    apiVersion: 'v1',
+    kind: 'Pod',
+    metadata: {
+      name: 'example-pod-1',
+      namespace: 'default',
+      resourceVersion: '1001',
+      creationTimestamp: '2022-10-25T10:00:00Z',
+      labels: {
+        app: 'example',
+      },
+    },
+    spec: {
+      nodeName: 'node-1',
+      containers: [
+        {
+          name: 'main',
+          image: 'nginx:latest',
+        },
+      ],
+    },
+    status: {
+      phase: 'Running',
+    },
+  },
+  {
+    apiVersion: 'v1',
+    kind: 'Pod',
+    metadata: {
+      name: 'example-pod-2',
+      namespace: 'default',
+      resourceVersion: '1002',
+      creationTimestamp: '2022-10-25T10:05:00Z',
+      labels: {
+        app: 'example',
+      },
+    },
+    spec: {
+      nodeName: 'node-2',
+      containers: [
+        {
+          name: 'main',
+          image: 'nginx:latest',
+        },
+      ],
+    },
+    status: {
+      phase: 'Running',
+    },
+  },
+  {
+    apiVersion: 'v1',
+    kind: 'Pod',
+    metadata: {
+      name: 'example-pod-3',
+      namespace: 'default',
+      resourceVersion: '1003',
+      creationTimestamp: '2022-10-25T10:10:00Z',
+      labels: {
+        app: 'example',
+      },
+    },
+    spec: {
+      nodeName: 'node-1',
+      containers: [
+        {
+          name: 'main',
+          image: 'nginx:latest',
+        },
+      ],
+    },
+    status: {
+      phase: 'Pending',
+    },
+  },
+];
+
 export default {
   title: 'Service/Details',
   component: Details,
@@ -172,6 +250,10 @@ Default.parameters = {
               metadata: {},
             })
         ),
+        http.get(
+          'http://localhost:4466/api/v1/namespaces/default/pods?labelSelector=app%3Dexample',
+          () => HttpResponse.json({ kind: 'PodList', items: pods, metadata: {} })
+        ),
       ],
     },
   },
@@ -197,6 +279,10 @@ ErrorWithEndpoints.parameters = {
         http.get(
           'http://localhost:4466/apis/discovery.k8s.io/v1/namespaces/default/endpointslices',
           () => HttpResponse.error()
+        ),
+        http.get(
+          'http://localhost:4466/api/v1/namespaces/default/pods?labelSelector=app%3Dexample',
+          () => HttpResponse.json({ kind: 'PodList', items: pods, metadata: {} })
         ),
       ],
     },
