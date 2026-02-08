@@ -63,9 +63,12 @@ jobs:
           npm ci
           npm run build
           cd ../../../
-          mkdir -p .plugins
+
+      - name: Extract KEDA plugin
+        run: |
           echo "Extracting KEDA plugin to .plugins/ folder..."
-          node bin/headlamp-plugin.js extract ../examples/keda ../../.plugins/
+          mkdir -p .plugins
+          node plugins/headlamp-plugin/bin/headlamp-plugin.js extract plugins/examples/keda .plugins/
 
       - name: Verify .plugins folder
         run: |
