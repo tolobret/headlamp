@@ -64,6 +64,12 @@ jobs:
           npm run build
           cd ../../../
 
+      - name: Install headlamp-plugin dependencies
+        run: |
+          echo "Installing headlamp-plugin dependencies..."
+          cd plugins/headlamp-plugin
+          npm install
+
       - name: Extract KEDA plugin
         run: |
           echo "Extracting KEDA plugin to .plugins/ folder..."
