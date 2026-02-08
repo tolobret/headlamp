@@ -26,6 +26,11 @@ on:
         type: boolean
         default: false
 
+# Prevent multiple workflow runs - only one instance at a time per branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: tolobret/headlamp
@@ -45,6 +50,31 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Build KEDA plugin
+        run: |
+          echo "Building KEDA plugin for inclusion in main image..."
+          cd plugins/examples/keda
+          npm ci
+          npm run build
+          cd ../../../
+          mkdir -p .plugins
+          echo "Extracting KEDA plugin to .plugins/ folder..."
+          node bin/headlamp-plugin.js extract ../examples/keda ../../.plugins/
+
+      - name: Verify .plugins folder
+        run: |
+          echo "Verifying KEDA plugin in .plugins/ folder..."
+          if [ ! -d ".plugins/keda" ]; then
+            echo "Error: KEDA plugin not found in .plugins/"
+            exit 1
+          fi
+          echo "✅ KEDA plugin ready in .plugins/keda/"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
